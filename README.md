@@ -2,7 +2,7 @@
 
 A dynamic, responsive movie and TV show application designed for exploring popular titles, browsing detailed information, and delivering an engaging user experience. The project combines a sleek front-end interface with a secure Node.js and Express backend, fetching data in real-time from The Movie Database (TMDB) API.
 
-![Flixx App Screenshot](./images/screenshot.png)
+![Flixx App Screenshot](.public/images/screenshot.png)
 
 ## View the Project
 
