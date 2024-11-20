@@ -1,3 +1,10 @@
+const isProduction = process.env.NODE_ENV === 'production'
+if (isProduction) {
+  console.log('Running in production mode')
+} else {
+  console.log('Running in development mode')
+}
+
 require('dotenv').config() // Load .env variables
 const express = require('express')
 const fetch = require('node-fetch')
@@ -34,8 +41,9 @@ app.get('/api/*', async (req, res) => {
   }
 })
 
-
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
-})
+if (!isProduction) {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`)
+  })
+}
