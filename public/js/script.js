@@ -419,13 +419,15 @@ async function fetchAPIData(endpoint) {
   showSpinner()
 
   try {
+    // Use relative paths for both local and deployed environments
     const response = await fetch(`/api/${endpoint}`)
-    const data = await response.json()
+    if (!response.ok) throw new Error('Failed to fetch data')
 
-    hideSpinner() // Ensure spinner is hidden after successful response
+    const data = await response.json()
+    hideSpinner()
     return data
   } catch (error) {
-    hideSpinner() // Ensure spinner is hidden on error
+    hideSpinner()
     console.error('Error fetching data:', error)
     showAlert('Failed to fetch data from the server')
     return null
