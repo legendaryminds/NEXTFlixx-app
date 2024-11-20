@@ -1,12 +1,12 @@
-# Flixx App
+# NEXTFlixx App
 
 A dynamic, responsive movie and TV show application designed for exploring popular titles, browsing detailed information, and delivering an engaging user experience. The project combines a sleek front-end interface with a secure Node.js and Express backend, fetching data in real-time from The Movie Database (TMDB) API.
 
-![Flixx App Screenshot](.public/images/screenshot.png)
+![NEXTFlixx App Screenshot](./images/screenshot.png)
 
 ## View the Project
 
-- **Live Demo**: [Flixx App](https://your-deployed-site-link.com)
+- **Live Demo**: [NEXTFlixx App](https://your-deployed-site-link.com)
 
 ## Key Features
 
@@ -61,4 +61,3 @@ A dynamic, responsive movie and TV show application designed for exploring popul
   - **GitHub**: [legendaryminds](https://github.com/legendaryminds)  
   - **Email**: *cynthianicolecarter369@gmail.com*
 
-Feel free to reach out with any questions or suggestions!
