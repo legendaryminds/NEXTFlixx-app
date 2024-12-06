@@ -13,7 +13,6 @@ const global = {
 }
 
 // Display 20 most popular movies
-
 async function displayPopularMovies() {
   const { results } = await fetchAPIData('movie/popular')
 
@@ -48,21 +47,22 @@ async function displayPopularMovies() {
   })
 }
 
-
 // Display 20 most popular TV shows
 async function displayPopularShows() {
-  // Use correct endpoint with English language filtering and 2024 release date
-  const endpoint =
-    'discover/tv?with_origin_country=US&with_original_language=en&sort_by=popularity.desc&first_air_date.gte=2024-01-01&first_air_date.lte=2024-12-31'
+  // Get the current year dynamically
+  const currentYear = new Date().getFullYear();
 
-  const data = await fetchAPIData(endpoint)
+  // Use correct endpoint with English language filtering and dynamic current year
+  const endpoint = `discover/tv?with_origin_country=US&with_original_language=en&sort_by=popularity.desc&first_air_date.gte=${currentYear}-01-01&first_air_date.lte=${currentYear}-12-31`;
+
+  const data = await fetchAPIData(endpoint);
   if (!data || !data.results) {
-    console.error('No TV shows data received:', data)
-    showAlert('Failed to load TV shows')
-    return
+    console.error('No TV shows data received:', data);
+    showAlert(`Failed to load TV shows for ${currentYear}`);
+    return;
   }
 
-  const { results } = data
+  const { results } = data;
 
   // Additional client-side filtering
   const filteredResults = results.filter(
@@ -70,16 +70,16 @@ async function displayPopularShows() {
       show.original_language === 'en' && // Only English language
       show.origin_country.includes('US') && // Must include 'US'
       show.origin_country.length === 1 // Exclude multi-country shows
-  )
+  );
 
   if (filteredResults.length === 0) {
-    showAlert('No popular TV shows found for 2024')
-    return
+    showAlert(`No popular TV shows found for ${currentYear}`);
+    return;
   }
 
   filteredResults.forEach((show) => {
-    const div = document.createElement('div')
-    div.classList.add('card')
+    const div = document.createElement('div');
+    div.classList.add('card');
     div.innerHTML = `
           <a href="tv-details.html?id=${show.id}">
             ${
@@ -102,10 +102,11 @@ async function displayPopularShows() {
               <small class="text-muted">Air Date: ${show.first_air_date}</small>
             </p>
           </div>
-    `
-    document.querySelector('#popular-shows').appendChild(div)
-  })
+    `;
+    document.querySelector('#popular-shows').appendChild(div);
+  });
 }
+
 
 
 // Display Movie Details
