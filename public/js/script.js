@@ -48,14 +48,36 @@ async function displayPopularMovies() {
   })
 }
 
-// Display 20 most popular tv shows
+
+// Display 20 most popular TV shows
 async function displayPopularShows() {
-  // Fetch data using the 'discover/tv' endpoint with filtering for US shows
-  const { results } = await fetchAPIData(
-    'discover/tv?with_origin_country=US&sort_by=popularity.desc&language=en-US'
+  // Use correct endpoint with English language filtering and 2024 release date
+  const endpoint =
+    'discover/tv?with_origin_country=US&with_original_language=en&sort_by=popularity.desc&first_air_date.gte=2024-01-01&first_air_date.lte=2024-12-31'
+
+  const data = await fetchAPIData(endpoint)
+  if (!data || !data.results) {
+    console.error('No TV shows data received:', data)
+    showAlert('Failed to load TV shows')
+    return
+  }
+
+  const { results } = data
+
+  // Additional client-side filtering
+  const filteredResults = results.filter(
+    (show) =>
+      show.original_language === 'en' && // Only English language
+      show.origin_country.includes('US') && // Must include 'US'
+      show.origin_country.length === 1 // Exclude multi-country shows
   )
 
-  results.forEach((show) => {
+  if (filteredResults.length === 0) {
+    showAlert('No popular TV shows found for 2024')
+    return
+  }
+
+  filteredResults.forEach((show) => {
     const div = document.createElement('div')
     div.classList.add('card')
     div.innerHTML = `
@@ -68,10 +90,10 @@ async function displayPopularShows() {
               alt="${show.name}"
             />`
                 : `<img
-            src="../images/no-image.jpg"
-            class="card-img-top"
-            alt="${show.name}"
-          />`
+              src="../images/no-image.jpg"
+              class="card-img-top"
+              alt="${show.name}"
+            />`
             }
           </a>
           <div class="card-body">
@@ -80,11 +102,11 @@ async function displayPopularShows() {
               <small class="text-muted">Air Date: ${show.first_air_date}</small>
             </p>
           </div>
-        `
-
+    `
     document.querySelector('#popular-shows').appendChild(div)
   })
 }
+
 
 // Display Movie Details
 async function displayMovieDetails() {
@@ -418,10 +440,17 @@ function initSwiper() {
 async function fetchAPIData(endpoint) {
   showSpinner()
 
-  try {
-    const response = await fetch(`/api/proxy?endpoint=${endpoint}`)
-    const data = await response.json()
+  // Avoid adding redundant parameters by checking if `?` is already present
+  const url = endpoint.includes('?')
+    ? `/api/proxy?endpoint=${endpoint}`
+    : `/api/proxy?endpoint=${endpoint}&language=en-US`
 
+  try {
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data = await response.json()
     hideSpinner() // Ensure spinner is hidden after successful response
     return data
   } catch (error) {
@@ -431,6 +460,7 @@ async function fetchAPIData(endpoint) {
     return null
   }
 }
+
 
 
 
