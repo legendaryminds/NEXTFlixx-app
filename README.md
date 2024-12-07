@@ -6,7 +6,7 @@ A dynamic, responsive movie and TV show application designed for exploring popul
 
 ## View the Project
 
-- **Live Demo**: [NEXTFlixx App](https://your-deployed-site-link.com)
+- **Live Demo**: [NEXTFlixx App](https://nextflixx-app.vercel.app/)
 
 ## Key Features
 
